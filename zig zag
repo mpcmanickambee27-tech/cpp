@@ -1,0 +1,33 @@
+#include <string>
+#include <vector>
+#include <algorithm> // Required for std::min
+
+class Solution {
+public:
+    std::string convert(const std::string& s, int numRows) {
+        if (numRows == 1) {
+            return s;
+        }
+
+        std::vector<std::string> rows(std::min(numRows, int(s.length())));
+        int currentRow = 0;
+        bool goingDown = false;
+
+        for (char c : s) {
+            rows[currentRow] += c;
+            // Change direction when reaching the first or the last row
+            if (currentRow == 0 || currentRow == numRows - 1) {
+                goingDown = !goingDown;
+            }
+            // Move to the next row based on direction
+            currentRow += goingDown ? 1 : -1;
+        }
+
+        std::string result;
+        for (const std::string& row : rows) {
+            result += row;
+        }
+
+        return result;
+    }
+};

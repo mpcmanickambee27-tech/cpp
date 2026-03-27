@@ -1,0 +1,63 @@
+class Solution {
+public:
+    std::vector<std::vector<int>> threeSum(std::vector<int>& nums) {
+        // Result vector to store unique triplets
+        std::vector<std::vector<int>> res;
+        int n = nums.size();
+
+        // If the array has fewer than 3 elements, no triplet is possible
+        if (n < 3) return res;
+
+        // Sort the array to efficiently handle duplicates and use two pointers
+        std::sort(nums.begin(), nums.end());
+
+        for (int i = 0; i < n - 2; ++i) {
+            // Skip duplicate elements for the first number (a) to avoid duplicate triplets
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+
+            // Optimization: If the smallest possible sum (with the first three elements) is
+            // already positive, no valid triplet can follow as the array is sorted.
+            if (nums[i] + nums[i + 1] + nums[i + 2] > 0) break;
+            // Optimization: If the largest possible sum (with the first and last two elements) is
+            // still negative, this nums[i] will never work, so move to the next i.
+            if (nums[i] + nums[n - 1] + nums[n - 2] < 0) continue;
+
+
+            // Use two pointers for the remaining elements
+            int left = i + 1;
+            int right = n - 1;
+            int target = -nums[i]; // Find two numbers that sum to -nums[i]
+
+            while (left < right) {
+                int sum = nums[left] + nums[right];
+
+                if (sum == target) {
+                    // Found a triplet
+                    res.push_back({nums[i], nums[left], nums[right]});
+
+                    // Skip duplicates for the second and third numbers (b and c)
+                    while (left < right && nums[left] == nums[left + 1]) {
+                        left++;
+                    }
+                    while (left < right && nums[right] == nums[right - 1]) {
+                        right--;
+                    }
+
+                    // Move pointers inward for the next potential unique triplet
+                    left++;
+                    right--;
+                } else if (sum < target) {
+                    // Sum is too small, increase the sum by moving the left pointer right
+                    left++;
+                } else {
+                    // Sum is too large, decrease the sum by moving the right pointer left
+                    right--;
+                }
+            }
+        }
+
+        return res;
+    }
+};

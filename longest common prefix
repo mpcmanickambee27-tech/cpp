@@ -1,0 +1,41 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        if (strs.empty()) {
+            return "";
+        }
+
+        for (int i = 0; i < strs[0].length(); ++i) { // Iterate through characters of the first string
+            char currentChar = strs[0][i];
+            for (int j = 1; j < strs.size(); ++j) { // Compare with characters of other strings
+                // If the current string is too short or the characters don't match
+                if (i == strs[j].length() || strs[j][i] != currentChar) {
+                    // Return the prefix found so far
+                    return strs[0].substr(0, i);
+                }
+            }
+        }
+
+        // If the entire first string is a common prefix
+        return strs[0];
+    }
+};
+
+// Example Usage (for local testing):
+// int main() {
+//     Solution solution;
+//     vector<string> strs1 = {"flower", "flow", "flight"};
+//     cout << "LCP of {\"flower\", \"flow\", \"flight\"}: " << solution.longestCommonPrefix(strs1) << endl; // Output: fl
+    
+//     vector<string> strs2 = {"dog", "racecar", "car"};
+//     cout << "LCP of {\"dog\", \"racecar\", \"car\"}: " << solution.longestCommonPrefix(strs2) << endl; // Output: ""
+
+//     return 0;
+// }
